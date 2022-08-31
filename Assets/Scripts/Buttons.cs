@@ -6,8 +6,13 @@ namespace Snake
     {
         [SerializeField] public GameObject snake;
         [SerializeField] public GameObject button;
+        [SerializeField] public GameObject gameOver;
         public bool isOnGame;
 
+        private void Start()
+        {
+            gameOver.SetActive(false);
+        }
         private void Update()
         {
             isOnGame = snake.GetComponent<Snake>().isOnGame;
@@ -16,15 +21,19 @@ namespace Snake
 
         public void OnClickResume()
         {
-            isOnGame = !isOnGame;
-            snake.GetComponent<Snake>().isOnGame = isOnGame;
+            if (snake.GetComponent<Transform>().position != Vector3.zero)
+            {
+                isOnGame = !isOnGame;
+                snake.GetComponent<Snake>().isOnGame = isOnGame;
+            }
+
         }
         public void OnClickNewGame()
         {
             snake.GetComponent<Snake>().ResetState();
-
             isOnGame = !isOnGame;
             snake.GetComponent<Snake>().isOnGame = isOnGame;
+            gameOver.SetActive(false);
         }
 
     }

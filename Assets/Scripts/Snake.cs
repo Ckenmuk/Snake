@@ -9,34 +9,36 @@ namespace Snake
         [SerializeField] private int initialSize = 4;
         [SerializeField] private GameObject buttonResume;
         [SerializeField] private GameObject buttonNewGame;
+        [SerializeField] public GameObject gameOver;
         
         private Vector2 _direction = Vector2.right;
-        private List<Transform> _segments = new List<Transform>();
+        public List<Transform> _segments = new List<Transform>();
 
         public bool isOnGame;
         public int score;
 
         private void Start()
         {
+            gameOver.SetActive(false);
             isOnGame = false;
             ResetState();
         }
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 _direction = Vector2.up;
             }
-            else if (Input.GetKeyDown(KeyCode.S))
+            else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
                 _direction = Vector2.down;
             }
-            else if (Input.GetKeyDown(KeyCode.D))
+            else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
                 _direction = Vector2.right;
             }
-            else if (Input.GetKeyDown(KeyCode.A))
+            else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 _direction = Vector2.left;
             }
@@ -46,6 +48,7 @@ namespace Snake
                 isOnGame = !isOnGame;
                 buttonResume.SetActive(!isOnGame);
                 buttonNewGame.SetActive(!isOnGame);
+                gameOver.SetActive(!isOnGame);
             }
         }
 
@@ -64,6 +67,7 @@ namespace Snake
                     0.0f
                     );
             }
+
         }
 
         private void Grow()
@@ -82,6 +86,10 @@ namespace Snake
             }
             else if (other.tag == "Obstacle")
             {
+                isOnGame = false;
+                buttonNewGame.SetActive(!isOnGame);
+                buttonResume.SetActive(!isOnGame);
+                gameOver.SetActive(!isOnGame);
                 ResetState();
             }
         }
